@@ -1,0 +1,78 @@
+<html><body>
+<style>
+	body {
+		margin: 20px;
+		font-size: 20px;
+		font-family: helvetica;
+	}
+	input, td, textarea {
+		padding: 10px;
+		font-size: 20px;
+		background-color: #f7f7ff;
+		border: solid 2px #aaa;
+	}
+	h1, h2, h3, h4, h5 {
+		font-size: 100%;
+		font-weight: bold;
+		margin: 0 0 8px 0;
+		padding: 0;
+	}
+	h5 { font-size: 110%; }
+	h4 { font-size: 120%; }
+	h3 { font-size: 130%; }
+	h2 { font-size: 140%; }
+	h1 { font-size: 150%; }
+
+	hr {
+		border: none;
+		border-bottom: solid 2px #aaa;
+	}
+
+	.theme {
+		font-weight: bold;
+	}
+	.note {
+		color: #888;
+		font-size: 80%;
+	}
+	.blab {
+		margin: 10px 0px;
+	}
+	.hilite {
+		background-color: #ff0;
+	}
+	#keywords {
+		width: 90%;
+		white-space: normal;
+		margin: 8px 0px;
+	}
+	a {
+		color: #00f;
+		text-decoration: none;
+
+	}
+	a:hover {
+		opacity: 0.5;
+	}
+</style>
+
+<h1>Show blabs containing any of these keywords:</h1>
+<input type=text id=keywords value="" placeholder="Keyword(s) separated by commas">
+<div class=note> Updating in <span id=secs>60</span> seconds.  </div>
+<hr>
+
+<div id=tpl_blab class="blab">
+	<div class=theme>
+		<a href="http://blab.im/__friendly_url__" target="__friendly_url__">__theme__</a>
+		(__viewer_count__ viewers)
+	</div>
+	<div id=who___stream_id__ class=note>__caller_names__</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="replicate.js"></script>
+<script src="sleepless.js"></script>
+<script src="meet.js"></script>
+<script src="notification.js"></script>
+<script src=local.js></script>
+
