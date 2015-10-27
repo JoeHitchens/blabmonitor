@@ -51,6 +51,7 @@ refresh = function() {
 			meet.start(function(done) {
 				$.get("https://api.blab.im/stream/viewers?stream_id="+stream_id, function(dd) {
 					var twits = dd.result.map(function(o) {
+
 						var twit = o.twitter_username.toLowerCase();
 						keywords.forEach(function(s) {
 							if((s) && (s.startsWith("@")) && (twit.indexOf(s.substr(1)) >= 0)) {
@@ -61,6 +62,7 @@ refresh = function() {
 							}
 						});
 						return "@"+twit;
+
 					});
 					$("#who_"+stream_id).html(twits.join(", "));
 					done();
@@ -68,6 +70,7 @@ refresh = function() {
 			});
 
 		});
+		// URL:https://api.blab.im/user/stream/list?user_id=19c418bc4a4d4ac6928b53fc57a0c030&count=200
 
 
 		var newbies = [];
