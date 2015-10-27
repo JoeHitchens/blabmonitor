@@ -22,9 +22,11 @@ analyze = function(blabs) {
 		// show those blabs where title matches 1 or more keywords
 		var theme = blab.theme.toLowerCase();
 		keywords.forEach(function(s) {
-			if((!s.startsWith("@")) && (theme.indexOf(s) >= 0)) {
-				blab.show = 1;
-				new_blabs[stream_id] = blab;
+			if( ! s.startsWith("@") ) {
+				if(theme.indexOf(s) >= 0) {
+					blab.show = 1;
+					new_blabs[stream_id] = blab;
+				}
 			}
 		});
 
@@ -32,12 +34,17 @@ analyze = function(blabs) {
 		users.forEach(function(user) {
 			var user_id = user.user_id;
 			user.hilite = 0;
-			var twitter_username = user.twitter_username;
+			var twitter_username = user.twitter_username.toLowerCase();
 			keywords.forEach(function(s) {
-				if((s.startsWith("@")) && (twitter_username.indexOf(s.substr(1)) >= 0)) {
-					user.hilite = 1;
-					blab.show = 1;
-					new_blabs[stream_id] = blab;
+				if(s.startsWith("@")) {
+					if(twitter_username.indexOf(s.substr(1)) >= 0) {
+						user.hilite = 1;
+						blab.show = 1;
+						new_blabs[stream_id] = blab;
+					}
+				}
+				else {
+					// check full name
 				}
 			});
 		});
