@@ -1,14 +1,17 @@
 <html><body>
 <style>
-	body {
+	body, td {
 		margin: 20px;
 		font-size: 20px;
 		font-family: helvetica;
 	}
+	table, td {
+		border: none;
+	}
 	input, td, textarea {
 		padding: 10px;
 		font-size: 20px;
-		background-color: #f7f7ff;
+		zbackground-color: #f7f7ff;
 		border: solid 2px #aaa;
 	}
 	h1, h2, h3, h4, h5 {
@@ -54,6 +57,37 @@
 	a:hover {
 		opacity: 0.5;
 	}
+
+	.hilite_0 { background-color: inherit; }
+	.hilite_1 { background-color: #ff0; }
+
+	.show_0 { display: none; }
+	.show_1 { display: inherit; }
+
+	.user {
+		display: inline-block;
+		padding: 5px;
+		margin: 0px 5px 2px 0px;
+	}
+
+	.user td {
+		font-size: 70%;
+		padding: 0px;
+		border: none;
+	}
+
+	.fullname {
+		color: #080;
+	}
+
+	.user_icon {
+		float:left;
+		width: 24px;
+		height: 24px;
+		margin-right: 5px;
+	}
+
+
 </style>
 
 <h1>Show blabs containing any of these keywords:</h1>
@@ -61,12 +95,23 @@
 <div class=note> Updating in <span id=secs>60</span> seconds.  </div>
 <hr>
 
-<div id=tpl_blab class="blab">
+<div id=tpl_blab class="blab show___show__">
 	<div class=theme>
 		<a href="http://blab.im/__friendly_url__" target="__friendly_url__">__theme__</a>
-		(__viewer_count__ viewers)
 	</div>
-	<div id=who___stream_id__ class=note>__caller_names__</div>
+	<div class=note>
+	<div id=tpl_user___stream_id__ class="user hilite___hilite__" title="__title__ (__followers__ followers)">
+		<table cellspacing=0 cellpadding=0>
+			<tr>
+				<td><img src="" class=user_icon></td>
+				<td>
+					<div class=fullname></div>
+					<div class=twitter>@__twitter_username__</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
