@@ -17,7 +17,7 @@ refresh = function() {
 
 
 	var blabs = null;
-	$.get("https://api.blab.im/stream/list?count=30&tags=&states=started&offset=0", function(list) {
+	$.get("https://api.blab.im/stream/list?count=100&tags=&states=started&offset=0", function(list) {
 
 		var new_blabs = {};
 		var new_twits = {};
