@@ -77,7 +77,6 @@ display = function(blabs) {
 			var e = $(e_user).find(".fullname").get(0);
 			var u = cached_users[user_id];
 			if(u) {
-				//console.log("cache hit: "+u.fullname);
 				e.innerHTML = u.fullname;
 				$(e_user).find("img").attr("src", u.image_square);
 			}
@@ -88,8 +87,6 @@ display = function(blabs) {
 					$(e_user).find("img").attr("src", u.image_square);
 				});
 			}
-
-			
 
 		});
 	});
@@ -129,28 +126,8 @@ refresh = function() {
 					var m2 = new Meet();
 					users.forEach(function(user) {
 						blab.users.push(user);
-						/*
-						m2.start(function(cb2) {
-							var user_id = user.user_id;
-							var u = cached_users[user_id];
-							if(u) {
-								console.log("cache hit: "+user_id);
-								blab.users.push(user);
-								cb2();
-							}
-							else {
-								$.get("https://api.blab.im/user/"+user_id, function(u) {
-									cached_users[user_id] = u;
-									blab.users.push(user);
-									cb2();
-								});
-							}
-						});
-						*/
 					});
 					m2.allDone(function() {
-						console.log("users loaded for blab "+blab.stream_id+": "+users.length);
-
 						// sort users by user id for consistency in change detection
 						blab.users.sort(function(a, b) {
 							if(a.user_id < b.user_id) { return -1; }
@@ -164,12 +141,8 @@ refresh = function() {
 			});
 		});
 		m.allDone(function() {
-			// all data loaded
-			console.log("blabs loaded: "+blabs.length);
-
 			analyze(blabs);
 			display(blabs);
-
 		});
 
 	});
