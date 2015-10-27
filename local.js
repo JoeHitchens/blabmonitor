@@ -127,7 +127,7 @@ setInterval(tick = function() {
 
 var v = localStorage.getItem("keywords");
 if(!v) {
-	v = "god,religion,religious,faith,prayer,belief,believe,truth,christian,muslim,karma,tarot,spirit,@magnabosco,@CJRobbemond,@vansliger";
+	v = "god,religion,religious,faith,prayer,belief,believe,truth,christian,muslim,karma,tarot,spirit";
 }
 $("#keywords").val(v).change(function() {
 	localStorage.setItem("keywords", this.value);
