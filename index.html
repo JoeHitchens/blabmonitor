@@ -33,6 +33,7 @@
 
 	.theme {
 		font-weight: bold;
+		background-color: #def;
 	}
 	.note {
 		color: #888;
@@ -101,13 +102,13 @@
 
 </style>
 
-<h1>Show blabs containing any of these keywords:</h1>
-<input type=text id=keywords value="" placeholder="Keyword(s) separated by commas">
-<div class="note timer"> Updating in <span id=secs>60</span> seconds.  </div>
+<b>Keywords:</b> <input type=text id=keywords value="" placeholder="Keyword(s) separated by commas">
 
-<hr>
-	Matched <span id=matched_blabs></span> of <span id=total_blabs></span> blabs and <span id=matched_users></span> users.
-<hr>
+<div class=note style="text-align: center">
+	Matched <span id=matched_blabs></span> (of <span id=total_blabs></span>) blab(s) and <span id=matched_users></span> users.
+	&mdash;
+	Updating in <span id=secs>60</span> seconds.
+</div>
 
 <div id=tpl_blab class="blab show___show__">
 	<div class=theme>
