@@ -1,7 +1,9 @@
 
 
-var cur_blabs = {};
-var cur_twits = {};
+cur_blabs = {};
+total_blabs = 0;
+matched_blabs = 0;
+matched_users = 0;
 
 cached_users = {};
 
@@ -14,6 +16,10 @@ analyze = function(blabs) {
 
 	var new_blabs = {};
 
+	total_blabs = blabs.length;
+	matched_blabs = 0;
+	matched_users = 0;
+
 	blabs.forEach(function(blab) {
 		var stream_id = blab.stream_id;
 
@@ -25,6 +31,7 @@ analyze = function(blabs) {
 			if( ! s.startsWith("@") ) {
 				if(theme.indexOf(s) >= 0) {
 					blab.show = 1;
+					matched_blabs += 1;
 					new_blabs[stream_id] = blab;
 				}
 			}
@@ -40,6 +47,7 @@ analyze = function(blabs) {
 					if(twitter_username.indexOf(s.substr(1)) >= 0) {
 						user.hilite = 1;
 						blab.show = 1;
+						matched_users += 1;
 						new_blabs[stream_id] = blab;
 					}
 				}
@@ -68,6 +76,9 @@ analyze = function(blabs) {
 
 
 display = function(blabs) {
+	$("#total_blabs").html(total_blabs);
+	$("#matched_blabs").html(matched_blabs);
+	$("#matched_users").html(matched_users);
 	replicate("tpl_blab", blabs, function(e_blab, blab, i) {
 		e_blab.id = "blab_"+blab.stream_id;
 		replicate("tpl_user_"+blab.stream_id, blab.users, function(e_user, user) {
