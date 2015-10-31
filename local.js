@@ -1,5 +1,10 @@
 
 
+log = function(s) { console.log(s); }
+
+
+replicate("tpl_who", []);
+
 cur_blabs = {};
 total_blabs = 0;
 matched_blabs = 0;
@@ -207,5 +212,24 @@ $("#keywords").val(v).change(function() {
 	localStorage.setItem("keywords", this.value);
 	refresh();
 }).change();
+
+
+
+fb_ready = function(data) {
+	log("fb_ready: "+o2j(data));
+	if(data) {
+		log("facebook session in effect")
+		//use_nick(data.first_name);
+		//pic = data.pic
+		//ws_connect()
+	}
+	else {
+		//glass(1)
+		//var nick = LS.get("nick") || "";
+		//$("#nick").val(nick);
+		//$("#nick_entry").show()
+		//$("#nick").focus()
+	}
+}
 
 
