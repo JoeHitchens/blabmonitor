@@ -61,6 +61,8 @@
 	.hilite_0 { background-color: inherit; }
 	.hilite_1 { background-color: #ff0; }
 
+	.caller_1 { border: solid 1px #f00; }
+
 	.show_0 { display: none; }
 	.show_1 { display: inherit; }
 
@@ -112,17 +114,27 @@
 		<a href="http://blab.im/__friendly_url__" target="__friendly_url__">__theme__</a>
 	</div>
 	<div class=note>
-	<div id=tpl_user___stream_id__ class="user hilite___hilite__" title="__title__ (__followers__ followers)">
-		<table cellspacing=0 cellpadding=0>
-			<tr>
-				<td><img src="" class=user_icon></td>
-				<td>
-					<div class=fullname></div>
-					<div class=twitter>@__twitter_username__</div>
-				</td>
-			</tr>
-		</table>
-	</div>
+		<div id=tpl_user___stream_id__ class="user caller___caller__ hilite___hilite__" title="__title__ (__followers__ followers)">
+			<table cellspacing=0 cellpadding=0>
+				<tr>
+					<td><img src="" class=user_icon></td>
+					<td>
+						<div class=fullname></div>
+						<div class=twitter>@__twitter_username__</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<!--
+		callers:
+		<div id=tpl_xc___stream_id__ class="note" >
+			__user_id__
+		</div>
+		users:
+		<div id=tpl_xu___stream_id__ class="note" >
+			__user_id__
+		</div>
+		-->
 	</div>
 </div>
 

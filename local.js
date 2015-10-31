@@ -37,6 +37,23 @@ analyze = function(blabs) {
 			}
 		});
 
+		for(var c = 0; c < blab.callers.length; c++) {
+			var caller = blab.callers[c];
+			for(var u = 0; u < blab.users.length; u++) {
+				var user = blab.users[u];
+				if(caller.user_id == user.user_id) {
+					user.caller = 1;
+					break;
+				}
+			}
+			if(u == blab.users.length) {
+				// caller wasn't found in users array
+				caller.caller = 1;
+				blab.users.push(caller);
+			}
+		}
+		
+
 		var users = blab.users;
 		users.forEach(function(user) {
 			var user_id = user.user_id;
@@ -100,6 +117,14 @@ display = function(blabs) {
 			}
 
 		});
+		/*
+		replicate("tpl_xc_"+blab.stream_id, blab.users, function(e, user) {
+			$(e).html(user.user_id.abbr(8));
+		});
+		replicate("tpl_xu_"+blab.stream_id, blab.callers, function(e, user) {
+			$(e).html(user.user_id.abbr(8));
+		});
+		*/
 	});
 }
 
