@@ -99,17 +99,21 @@
 		color: #888;
 		font-size: 50%;
 	}
+	.who_person {
+		font-size: 80%;
+		color: #a98;
+		display: inline-block;
+	}
 
 </style>
 
 <!-- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button> -->
 
-<div id=who>
-	<div id=tpl_who>
-		__client_id__
-		<img height=20 src="__pic__">
-	</div>
+<b>Also on this page:</b>
+<div id=tpl_who class=who_person>
+	__name__
 </div>
+<hr>
 
 
 <b>Keywords:</b> <input type=text id=keywords value="" placeholder="Keyword(s) separated by commas">
@@ -150,11 +154,12 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="http://das.sleepless.com:5700/socktopus.js"></script>
+<!-- script src="http://das.sleepless.com:5700/socktopus.js"></script -->
 <script src="fb.js"></script>
 <script src="replicate.js"></script>
 <script src="sleepless.js"></script>
 <script src="meet.js"></script>
 <script src="notification.js"></script>
+<script src="db.js"></script>
 <script src=local.js></script>
 

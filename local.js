@@ -2,6 +2,22 @@
 
 log = function(s) { console.log(s); }
 
+function getQueryData(key) {
+	var o = {}
+	var s = document.location.search
+	if(s) {
+		var kv = s.substr(1).split("&")
+		for(var i = 0; i < kv.length; i++) {
+			var aa = kv[i].split("=")
+			o[aa[0]] = decodeURIComponent(aa[1])
+		}
+	}
+	if(key !== undefined) {
+		return o[key];
+	}
+	return o;
+}
+
 
 replicate("tpl_who", []);
 
@@ -215,10 +231,13 @@ $("#keywords").val(v).change(function() {
 
 
 
+nick = "";
+
 fb_ready = function(data) {
 	log("fb_ready: "+o2j(data));
 	if(data) {
 		log("facebook session in effect")
+		nick = data.first_name+" "+data.last_name;
 		//use_nick(data.first_name);
 		//pic = data.pic
 		//ws_connect()
@@ -232,4 +251,76 @@ fb_ready = function(data) {
 	}
 }
 
+
+var who = {};
+replicate("tpl_who", []);
+
+//var sock = null;
+
+beforeUnload = function() {
+	//if(sock) {
+	//	sock.send("/leave "+nick);
+	//	sock.close();
+	//	sock = null;
+	//}
+	return null;
+}
+
+
+/*updateWho = function() {
+	var a = [];
+	for(var n in who) {
+		a.push({name:n});
+	}
+	replicate("tpl_who", a, function(e, d) {
+	});
+}*/
+
+
+ping = function() {
+	db.sql("delete from users where ping < date_sub(now(), interval 15 second)", [], function(r) {
+		//console.log("culled "+o2j(r.affected_rows));
+		db.sql("select name from users where ping > date_sub(now(), interval 15 second)", [], function(r) {
+			//console.log("r="+o2j(r));
+			replicate("tpl_who", r.records, function(e, d) {
+			});
+		});
+	});
+
+	db.sql("update users set ping=now() where name=?", [nick], function(r) {
+		if(r.affected_rows < 1) {
+			db.sql("insert into users (name, ping) values(?, now())", [nick], function(r) {
+				//console.log("inserted "+nick);
+			});
+		}
+		else {
+			//console.log("updated "+nick);
+		}
+	});
+
+}
+
+
+db = null;
+
+$(document).ready(function() {
+	/*sock = Socktopus.join("account/secret/blabmonitor", function(msg) {
+		log("msg: "+msg);
+	});
+
+	sock.onopen = function() {
+		log("open: ");
+		//sock.send("present ");
+	}
+	*/
+	db = new DB("blabmonitor", "9D9tMZKLrEWVPB6M");
+
+	setInterval(function() {
+		//console.log('tick');
+		if(nick) {
+			ping(nick);
+		}
+	}, 5 * 1000);
+
+});
 
