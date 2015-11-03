@@ -103,15 +103,29 @@
 		font-size: 80%;
 		color: #a98;
 		display: inline-block;
+		position: absolute;
+		top: 100px;
+		right: 20px;
+		padding: 10px;
+		opacity: 0.8;
+		background-color: #fff;
+		vertical-align: middle;
+	}
+	.who_person img {
+		width: 16px;
+		height: 16px;
+		margin-right: 8px;
+		vertical-align: middle;
 	}
 
 </style>
 
 <!-- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button> -->
 
-<b>Also on this page:</b>
+<!-- <b>Also on this page:</b>
+-->
 <div id=tpl_who class=who_person>
-	__name__
+	<img src="__pic__"> __name__
 </div>
 <hr>
 
