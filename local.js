@@ -21,6 +21,8 @@ function getQueryData(key) {
 
 replicate("tpl_who", []);
 
+cur_ver = null;
+
 cur_blabs = {};
 total_blabs = 0;
 matched_blabs = 0;
@@ -235,18 +237,17 @@ nick = "";
 pic = "";
 
 fb_ready = function(data) {
-	log("fb_ready: "+o2j(data));
+	//log("fb_ready: "+o2j(data));
 	if(data) {
 		log("facebook session in effect")
 		nick = data.first_name+" "+data.last_name;
-		log("nick="+nick);
 		pic = data.pic;
-		log("pic="+pic);
+		//log("pic="+pic);
 		//use_nick(data.first_name);
 		//ws_connect()
 	}
 	else {
-		nick = "Guest";
+		nick = "Guest-"+(toInt(Math.random() * 100000));
 		pic = "";
 		//glass(1)
 		//var nick = LS.get("nick") || "";
@@ -254,6 +255,8 @@ fb_ready = function(data) {
 		//$("#nick_entry").show()
 		//$("#nick").focus()
 	}
+	log("nick="+nick);
+	ping();
 }
 
 
@@ -267,26 +270,46 @@ beforeUnload = function() {
 
 
 ping = function() {
-	db.sql("delete from users where ping < date_sub(now(), interval 15 second)", [], function(r) {
+
+	db.sql("delete from users where name='Guest' or ping < date_sub(now(), interval 30 second)", [], function(r) {
 		//log("culled "+o2j(r.affected_rows));
-		db.sql("select * from users where ping > date_sub(now(), interval 15 second) order by name", [], function(r) {
+		db.sql("select * from users where ping >= date_sub(now(), interval 15 second) order by name", [], function(r) {
 			//log("r="+o2j(r));
 			replicate("tpl_who", r.records, function(e, d) {
+				$(e).find("img").attr("src", d.pic);
 			});
 		});
 	});
 
-	db.sql("update users set ping=now(), pic=? where name=?", [pic, nick], function(r) {
-		if(r.affected_rows < 1) {
-			db.sql("insert into users (pic, name, ping) values(?, ?, now())", [pic, nick], function(r) {
-				log("inserted "+nick);
-			});
+	if(nick) {
+		db.sql("update users set ping=now(), pic=? where name=?", [pic, nick], function(r) {
+			if(r.affected_rows < 1) {
+				db.sql("insert into users (pic, name, ping) values(?, ?, now())", [pic, nick], function(r) {
+					log("inserted "+nick);
+				});
+			}
+			else {
+				//log("updated "+nick);
+			}
+		});
+	}
+
+	$.get("./version.txt", function(s) {
+		cur_ver = localStorage.getItem("current_version");
+		if(!cur_ver) {
+			log("noting cur_ver "+s);
+			localStorage.setItem("current_version", s);
 		}
 		else {
-			log("updated "+nick);
+			if(cur_ver != s) {
+				localStorage.setItem("current_version", s);
+				log("version update!");
+				setTimeout(function() {
+					document.location.reload();
+				}, 2000);
+			}
 		}
 	});
-
 }
 
 
@@ -295,12 +318,12 @@ db = null;
 $(document).ready(function() {
 	db = new DB("blabmonitor", "9D9tMZKLrEWVPB6M");
 
-	setInterval(function() {
-		//log('tick');
-		if(nick) {
-			ping(nick);
-		}
-	}, 5 * 1000);
+	setInterval(ping, 15 * 1000);
+	ping();
+
+	//setInterval(function() {
+	//	document.reload();
+	//}, 8 * 60 * 60 * 1000);
 
 });
 
