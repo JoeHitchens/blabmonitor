@@ -303,10 +303,8 @@ ping = function() {
 		else {
 			if(cur_ver != s) {
 				localStorage.setItem("current_version", s);
-				log("version update!");
-				setTimeout(function() {
-					document.location.reload();
-				}, 2000);
+				// log("version update!");
+				document.location.reload();
 			}
 		}
 	});
@@ -320,10 +318,6 @@ $(document).ready(function() {
 
 	setInterval(ping, 15 * 1000);
 	ping();
-
-	//setInterval(function() {
-	//	document.reload();
-	//}, 8 * 60 * 60 * 1000);
 
 });
 
