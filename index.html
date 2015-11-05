@@ -103,6 +103,7 @@
 		position: absolute;
 		top: 100px;
 		right: 20px;
+		display: none;
 	}
 	.who_person {
 		font-size: 80%;
@@ -119,6 +120,17 @@
 		vertical-align: middle;
 	}
 
+	.blabs_container {
+		display: inline-block;
+		vertical-align: top;
+		width: 800px;
+	}
+	.ctrls_container {
+		display: inline-block;
+		vertical-align: top;
+		width: 220px;
+	}
+
 </style>
 
 <!-- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button> -->
@@ -131,50 +143,46 @@
 	</div>
 </div>
 
-<hr>
 
-
-<b>Keywords:</b>
-<div class=note>
-	Blabs with any of these keywords in the title are shown.<br>
-	A keyword that looks like a  twitter handle (e.g., @magnabosco) will show blabs containing that person.
-</div>
-<input type=text id=keywords value="" placeholder="Keyword(s) separated by commas">
-
-<div class=note style="text-align: center">
-	Matched <span id=matched_blabs></span> (of <span id=total_blabs></span>) blab(s) and <span id=matched_users></span> users.
-	&mdash;
-	Updating in <span id=secs>60</span> seconds.
-</div>
-
-<div id=tpl_blab class="blab show___show__">
-	<div class=theme>
-		<a href="http://blab.im/__friendly_url__" target="__friendly_url__">__theme__</a>
+<div class=blabs_container>
+	<div class=note style="text-align: center">
+		Matched <span id=matched_blabs></span> (of <span id=total_blabs></span>) blab(s) and <span id=matched_users></span> users.
+		&mdash;
+		Updating in <span id=secs>60</span> seconds.
 	</div>
+	<hr>
+
+	<div id=tpl_blab class="blab show___show__">
+		<div class=theme>
+			<a href="http://blab.im/__friendly_url__" target="__friendly_url__">__theme__</a>
+		</div>
+		<div class=note>
+			<div id=tpl_user___stream_id__ class="user caller___caller__ hilite___hilite__" title="__title__ (__followers__ followers)">
+				<table cellspacing=0 cellpadding=0>
+					<tr>
+						<td><img src="" class=user_icon></td>
+						<td>
+							<div class=fullname></div>
+							<div class=twitter>@__twitter_username__</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class=ctrls_container>
+	<b>Keywords</b>
+	<p>
 	<div class=note>
-		<div id=tpl_user___stream_id__ class="user caller___caller__ hilite___hilite__" title="__title__ (__followers__ followers)">
-			<table cellspacing=0 cellpadding=0>
-				<tr>
-					<td><img src="" class=user_icon></td>
-					<td>
-						<div class=fullname></div>
-						<div class=twitter>@__twitter_username__</div>
-					</td>
-				</tr>
-			</table>
-		</div>
-		<!--
-		callers:
-		<div id=tpl_xc___stream_id__ class="note" >
-			__user_id__
-		</div>
-		users:
-		<div id=tpl_xu___stream_id__ class="note" >
-			__user_id__
-		</div>
-		-->
+		Blabs with any of these keywords in the title are shown.
+		A keyword that looks like a  twitter handle (e.g., @magnabosco) will show blabs containing that person.
 	</div>
+	<p>
+	<textarea cols=30 rows=50 id=keywords value="" placeholder="Keyword(s) separated by commas"></textarea>
 </div>
+
 
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <!-- script src="http://das.sleepless.com:5700/socktopus.js"></script -->
