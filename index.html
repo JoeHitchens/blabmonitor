@@ -99,13 +99,14 @@
 		color: #888;
 		font-size: 50%;
 	}
-	.who_person {
-		font-size: 80%;
-		color: #a98;
-		display: inline-block;
+	.who_container {
 		position: absolute;
 		top: 100px;
 		right: 20px;
+	}
+	.who_person {
+		font-size: 80%;
+		color: #a98;
 		padding: 10px;
 		opacity: 0.8;
 		background-color: #fff;
@@ -124,9 +125,12 @@
 
 <!-- <b>Also on this page:</b>
 -->
-<div id=tpl_who class=who_person>
-	<img src=""> __name__
+<div class=who_container>
+	<div id=tpl_who class=who_person>
+		<img src=""> __name__
+	</div>
 </div>
+
 <hr>
 
 
