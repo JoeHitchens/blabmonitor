@@ -51,11 +51,13 @@ analyze = function(blabs) {
 		// show those blabs where title matches 1 or more keywords
 		var theme = blab.theme.toLowerCase();
 		keywords.forEach(function(s) {
-			if( ! s.startsWith("@") ) {
-				if(theme.indexOf(s) >= 0) {
-					blab.show = 1;
-					matched_blabs += 1;
-					new_blabs[stream_id] = blab;
+			if(s) {
+				if( ! s.startsWith("@") ) {
+					if(theme.indexOf(s) >= 0) {
+						blab.show = 1;
+						matched_blabs += 1;
+						new_blabs[stream_id] = blab;
+					}
 				}
 			}
 		});
@@ -83,16 +85,18 @@ analyze = function(blabs) {
 			user.hilite = 0;
 			var twitter_username = user.twitter_username.toLowerCase();
 			keywords.forEach(function(s) {
-				if(s.startsWith("@")) {
-					if(twitter_username.indexOf(s.substr(1)) >= 0) {
-						user.hilite = 1;
-						blab.show = 1;
-						matched_users += 1;
-						new_blabs[stream_id] = blab;
+				if(s) {
+					if(s.startsWith("@")) {
+						if(twitter_username.indexOf(s.substr(1)) >= 0) {
+							user.hilite = 1;
+							blab.show = 1;
+							matched_users += 1;
+							new_blabs[stream_id] = blab;
+						}
 					}
-				}
-				else {
-					// check full name
+					else {
+						// check full name
+					}
 				}
 			});
 		});
@@ -180,7 +184,7 @@ refresh = function() {
 		blabs.forEach(function(blab) {
 			m.start(function(cb) {
 				blab.users = [];
-				$.get("https://api.blab.im/stream/viewers?stream_id="+blab.stream_id, function(r) {
+				$.get("https://api.blab.im/stream/viewers?count=100&stream_id="+blab.stream_id, function(r) {
 					var users = r.result;
 					var m2 = new Meet();
 					users.forEach(function(user) {
