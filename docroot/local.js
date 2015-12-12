@@ -275,6 +275,7 @@ beforeUnload = function() {
 
 ping = function() {
 
+/*
 	db.sql("delete from users where name='Guest' or ping < date_sub(now(), interval 30 second)", [], function(r) {
 		//log("culled "+o2j(r.affected_rows));
 		db.sql("select * from users where ping >= date_sub(now(), interval 15 second) order by name", [], function(r) {
@@ -297,6 +298,7 @@ ping = function() {
 			}
 		});
 	}
+*/
 
 	$.get("./version.txt", function(s) {
 		cur_ver = localStorage.getItem("current_version");
@@ -315,10 +317,7 @@ ping = function() {
 }
 
 
-db = null;
-
 $(document).ready(function() {
-	db = new DB("blabmonitor", "9D9tMZKLrEWVPB6M");
 
 	setInterval(ping, 15 * 1000);
 	ping();

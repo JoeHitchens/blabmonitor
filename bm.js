@@ -28,3 +28,13 @@ connect = function(req, cb_accept) {
 
 maws.listen( 12345, connect, "docroot")
 
+// 	-	-	-	-	-	-	-	-	
+
+var DS = require("ds").DS
+ds = new DS()
+ds.data = {};
+//ds.save()
+
+
+
+

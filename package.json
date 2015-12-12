@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "ds": "^1.4.1",
     "maws": "^1.8.0",
     "meet": "^2.0.0",
     "sleepless": "^2.2.1",
