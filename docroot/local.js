@@ -128,6 +128,7 @@ display = function(blabs) {
 			evt.stopPropagation();	
 			var url= "http://blab.im/"+blab.friendly_url;
 			$("#blab_frame").attr("src", url);
+			$("#monitor").click();
 		});
 		e_blab.id = "blab_"+blab.stream_id;
 		replicate("tpl_user_"+blab.stream_id, blab.users, function(e_user, user) {
@@ -372,10 +373,21 @@ $(document).ready(function() {
 	maws_init();
 
 	var next = "-20px";
-	$("#monitor").click(function() {
+	$("#monitor").click(function(evt) {
+		evt.stopPropagation();	
 		var prev = $(this).css("right");
-		$(this).animate({right:next}, 100, function(){next = prev;});
+		$(this).animate({right:next}, 100, function(){
+			next = prev;
+		});
 	});
+
+	$("#toggler").click(function() {
+		$("#monitor").click();
+	});
+
+	setTimeout(function() {
+		$("#monitor").click();
+	}, 2000);
 	
 });
 

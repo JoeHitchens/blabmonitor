@@ -138,7 +138,7 @@
 		padding: 25px;
 		position: absolute;
 		top: 20px;
-		right: -630px;
+		right: -620px;
 		border: solid 2px #458; 
 		box-shadow: 10px 2px 10px 10px rgba(0, 0, 0, 0.4);
 		border-radius: 10px;
@@ -166,6 +166,15 @@
 	}
 	.preview:hover {
 		opacity: 0.7;
+	}
+
+	#toggler {
+		position: relative;
+		left: -20px;
+		top: -20px;
+		display: inline-block;
+		font-size: 120%;
+		zcolor: #def;
 	}
 
 </style>
@@ -202,9 +211,11 @@
 
 <div id=monitor class=blabs_container>
 
+	<div id=toggler>◈</div>
+
 	<div id=tpl_blab class="blab show___show__">
 		<div class=theme>
-			<a class=preview zhref="http://blab.im/__friendly_url__" target="__friendly_url__">◀ __theme__</a>
+			<a class=preview zhref="http://blab.im/__friendly_url__" target="__friendly_url__">&#x25c0; __theme__</a>
 		</div>
 		<div class=note>
 			<div id=tpl_user___stream_id__ class="user caller___caller__ hilite___hilite__" title="__title__ (__followers__ followers)">

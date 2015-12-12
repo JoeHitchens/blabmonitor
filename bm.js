@@ -25,7 +25,7 @@ connect = function(req, cb_accept) {
 
 }
 
-maws.listen( 12345, connect, "docroot")
+maws.listen(9900, connect, "docroot")
 
 
 // 	-	-	-	-	-	-	-	-	
