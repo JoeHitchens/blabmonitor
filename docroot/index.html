@@ -5,9 +5,10 @@
 <body>
 <style>
 	body, td {
-		margin: 20px;
+		margin: 0px;
 		font-size: 20px;
 		font-family: helvetica;
+		background-color: #000;
 	}
 	table, td {
 		border: none;
@@ -51,8 +52,7 @@
 	}
 	#keywords {
 		width: 90%;
-		white-space: normal;
-		margin: 8px 0px;
+		height: 200px;
 	}
 	a {
 		color: #00f;
@@ -75,6 +75,12 @@
 		display: inline-block;
 		padding: 5px;
 		margin: 0px 5px 2px 0px;
+		opacity: 1.0;
+		cursor: pointer;
+	}
+
+	.user:hover {
+		opacity: 0.7;
 	}
 
 	.user td {
@@ -127,15 +133,54 @@
 	.blabs_container {
 		display: inline-block;
 		vertical-align: top;
-		width: 800px;
+		width: 600px;
+		background-color: rgba(200, 220, 240, 0.9);
+		padding: 25px;
+		position: absolute;
+		top: 20px;
+		right: -630px;
+		border: solid 2px #458; 
+		box-shadow: 10px 2px 10px 10px rgba(0, 0, 0, 0.4);
+		border-radius: 10px;
 	}
+
 	.ctrls_container {
-		display: inline-block;
-		vertical-align: top;
-		width: 220px;
+		position: absolute;
+		top: 640px;
+		left: 20px;
+	}
+
+	#blab_frame {
+		border: none;
+		position: absolute;
+		top: 20px;
+		left: 20px;
+		width: 90%;
+		height: 600px;
+		background-color: #000;
+		zborder: solid 1px #888;
+	}
+
+	.preview {
+		cursor: pointer;
+	}
+	.preview:hover {
+		opacity: 0.7;
 	}
 
 </style>
+
+<iframe id=blab_frame src="" ></iframe>
+
+
+<div class=ctrls_container>
+	<div class=note>
+		Blabs with any of these keywords in the title are shown.
+		A keyword that looks like a  twitter handle (e.g., @magnabosco) will show blabs containing that person.
+	</div>
+	<textarea cols=30 rows=50 id=keywords value="" placeholder="Keyword(s) separated by commas"></textarea>
+</div>
+
 
 <!-- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button> -->
 
@@ -148,17 +193,18 @@
 </div>
 
 
-<div class=blabs_container>
-	<div class=note style="text-align: center">
-		Matched <span id=matched_blabs></span> (of <span id=total_blabs></span>) blab(s) and <span id=matched_users></span> users.
-		&mdash;
-		Updating in <span id=secs>60</span> seconds.
-	</div>
-	<hr>
+<div class=note >
+	Matched <span id=matched_blabs></span> (of <span id=total_blabs></span>) blab(s) and <span id=matched_users></span> users.
+	&mdash;
+	Updating in <span id=secs>60</span> seconds.
+</div>
+
+
+<div id=monitor class=blabs_container>
 
 	<div id=tpl_blab class="blab show___show__">
 		<div class=theme>
-			<a href="http://blab.im/__friendly_url__" target="__friendly_url__">__theme__</a>
+			<a class=preview zhref="http://blab.im/__friendly_url__" target="__friendly_url__">◀ __theme__</a>
 		</div>
 		<div class=note>
 			<div id=tpl_user___stream_id__ class="user caller___caller__ hilite___hilite__" title="__title__ (__followers__ followers)">
@@ -174,17 +220,6 @@
 			</div>
 		</div>
 	</div>
-</div>
-
-<div class=ctrls_container>
-	<b>Keywords</b>
-	<p>
-	<div class=note>
-		Blabs with any of these keywords in the title are shown.
-		A keyword that looks like a  twitter handle (e.g., @magnabosco) will show blabs containing that person.
-	</div>
-	<p>
-	<textarea cols=30 rows=50 id=keywords value="" placeholder="Keyword(s) separated by commas"></textarea>
 </div>
 
 

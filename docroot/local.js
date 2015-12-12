@@ -124,6 +124,11 @@ display = function(blabs) {
 	$("#matched_blabs").html(matched_blabs);
 	$("#matched_users").html(matched_users);
 	replicate("tpl_blab", blabs, function(e_blab, blab, i) {
+		$(e_blab).find(".preview").click(function(evt) {
+			evt.stopPropagation();	
+			var url= "http://blab.im/"+blab.friendly_url;
+			$("#blab_frame").attr("src", url);
+		});
 		e_blab.id = "blab_"+blab.stream_id;
 		replicate("tpl_user_"+blab.stream_id, blab.users, function(e_user, user) {
 			var user_id = user.user_id;
@@ -142,6 +147,10 @@ display = function(blabs) {
 					$(e_user).find("img").attr("src", u.image_square);
 				});
 			}
+
+			$(e_user).click(function() {
+				socket.send({msg:"user_info", user:user});
+			});
 
 		});
 		/*
@@ -317,10 +326,56 @@ ping = function() {
 }
 
 
+maws_init = function() {
+
+	log = function(s) {
+		console.log(s)
+	} 
+
+	//MAWS.dbg = function(s) { log("MAWS: "+s) }
+
+	cb_msg = function(m) {
+		if(m.msg == "ping") {
+			m.reply({msg:"pong"});
+			return
+		}
+	}
+
+	cb_ctrl = function(m, x) {
+		log("CTRL: "+m+", ["+o2j(x)+"]")
+
+		if(m === "disconnected") {
+			log("reconnecting ...");
+			setTimeout(function() {
+				socket = MAWS.connect(cb_msg, cb_ctrl)
+			}, 5000);
+			return
+		}
+
+		if(m === "connected") {
+			socket.send({msg:"hello"}, function(r) {
+				log("I've been welcomed as "+r.name)
+			});
+			return
+		}
+	}
+
+	socket = MAWS.connect(cb_msg, cb_ctrl)
+}
+
+
 $(document).ready(function() {
 
 	setInterval(ping, 15 * 1000);
 	ping();
 
+	maws_init();
+
+	var next = "-20px";
+	$("#monitor").click(function() {
+		var prev = $(this).css("right");
+		$(this).animate({right:next}, 100, function(){next = prev;});
+	});
+	
 });
 
