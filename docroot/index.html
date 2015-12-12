@@ -1,4 +1,8 @@
-<html><body>
+<html>
+	<head>
+		<link rel="shortcut icon" href="https://sleepless.com/images/ssicon-2.png">
+	</head>
+<body>
 <style>
 	body, td {
 		margin: 20px;
@@ -33,6 +37,7 @@
 
 	.theme {
 		font-weight: bold;
+		background-color: #def;
 	}
 	.note {
 		color: #888;
@@ -60,6 +65,8 @@
 
 	.hilite_0 { background-color: inherit; }
 	.hilite_1 { background-color: #ff0; }
+
+	.caller_1 { border: solid 1px #f00; }
 
 	.show_0 { display: none; }
 	.show_1 { display: inherit; }
@@ -92,36 +99,102 @@
 		color: #888;
 	}
 
+	.timer {
+		color: #888;
+		font-size: 50%;
+	}
+	.who_container {
+		position: absolute;
+		top: 100px;
+		right: 20px;
+		display: none;
+	}
+	.who_person {
+		font-size: 80%;
+		color: #a98;
+		padding: 10px;
+		opacity: 0.8;
+		background-color: #fff;
+		vertical-align: middle;
+	}
+	.who_person img {
+		width: 16px;
+		height: 16px;
+		margin-right: 8px;
+		vertical-align: middle;
+	}
+
+	.blabs_container {
+		display: inline-block;
+		vertical-align: top;
+		width: 800px;
+	}
+	.ctrls_container {
+		display: inline-block;
+		vertical-align: top;
+		width: 220px;
+	}
+
 </style>
 
-<h1>Show blabs containing any of these keywords:</h1>
-<input type=text id=keywords value="" placeholder="Keyword(s) separated by commas">
-<div class=note> Updating in <span id=secs>60</span> seconds.  </div>
-<hr>
+<!-- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button> -->
 
-<div id=tpl_blab class="blab show___show__">
-	<div class=theme>
-		<a href="http://blab.im/__friendly_url__" target="__friendly_url__">__theme__</a>
-	</div>
-	<div class=note>
-	<div id=tpl_user___stream_id__ class="user hilite___hilite__" title="__title__ (__followers__ followers)">
-		<table cellspacing=0 cellpadding=0>
-			<tr>
-				<td><img src="" class=user_icon></td>
-				<td>
-					<div class=fullname></div>
-					<div class=twitter>@__twitter_username__</div>
-				</td>
-			</tr>
-		</table>
-	</div>
+<!-- <b>Also on this page:</b>
+-->
+<div class=who_container>
+	<div id=tpl_who class=who_person>
+		<img src=""> __name__
 	</div>
 </div>
 
+
+<div class=blabs_container>
+	<div class=note style="text-align: center">
+		Matched <span id=matched_blabs></span> (of <span id=total_blabs></span>) blab(s) and <span id=matched_users></span> users.
+		&mdash;
+		Updating in <span id=secs>60</span> seconds.
+	</div>
+	<hr>
+
+	<div id=tpl_blab class="blab show___show__">
+		<div class=theme>
+			<a href="http://blab.im/__friendly_url__" target="__friendly_url__">__theme__</a>
+		</div>
+		<div class=note>
+			<div id=tpl_user___stream_id__ class="user caller___caller__ hilite___hilite__" title="__title__ (__followers__ followers)">
+				<table cellspacing=0 cellpadding=0>
+					<tr>
+						<td><img src="" class=user_icon></td>
+						<td>
+							<div class=fullname></div>
+							<div class=twitter>@__twitter_username__</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class=ctrls_container>
+	<b>Keywords</b>
+	<p>
+	<div class=note>
+		Blabs with any of these keywords in the title are shown.
+		A keyword that looks like a  twitter handle (e.g., @magnabosco) will show blabs containing that person.
+	</div>
+	<p>
+	<textarea cols=30 rows=50 id=keywords value="" placeholder="Keyword(s) separated by commas"></textarea>
+</div>
+
+
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<!-- script src="http://das.sleepless.com:5700/socktopus.js"></script -->
+<script src="fb.js"></script>
 <script src="replicate.js"></script>
 <script src="sleepless.js"></script>
 <script src="meet.js"></script>
 <script src="notification.js"></script>
+<script src="db.js"></script>
 <script src=local.js></script>
 

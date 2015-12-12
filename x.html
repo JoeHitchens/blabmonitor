@@ -1,0 +1,135 @@
+<html><body>
+<style>
+	body, td {
+		margin: 20px;
+		font-size: 20px;
+		font-family: helvetica;
+	}
+	table, td {
+		border: none;
+	}
+	input, td, textarea {
+		padding: 10px;
+		font-size: 20px;
+		zbackground-color: #f7f7ff;
+		border: solid 2px #aaa;
+	}
+	h1, h2, h3, h4, h5 {
+		font-size: 100%;
+		font-weight: bold;
+		margin: 0 0 8px 0;
+		padding: 0;
+	}
+	h5 { font-size: 110%; }
+	h4 { font-size: 120%; }
+	h3 { font-size: 130%; }
+	h2 { font-size: 140%; }
+	h1 { font-size: 150%; }
+
+	hr {
+		border: none;
+		border-bottom: solid 2px #aaa;
+	}
+
+	.theme {
+		font-weight: bold;
+	}
+	.note {
+		color: #888;
+		font-size: 80%;
+	}
+	.blab {
+		margin: 10px 0px;
+	}
+	.hilite {
+		background-color: #ff0;
+	}
+	#keywords {
+		width: 90%;
+		white-space: normal;
+		margin: 8px 0px;
+	}
+	a {
+		color: #00f;
+		text-decoration: none;
+
+	}
+	a:hover {
+		opacity: 0.5;
+	}
+
+	.hilite_0 { background-color: inherit; }
+	.hilite_1 { background-color: #ff0; }
+
+	.show_0 { display: none; }
+	.show_1 { display: inherit; }
+
+	.user {
+		display: inline-block;
+		padding: 5px;
+		margin: 0px 5px 2px 0px;
+	}
+
+	.user td {
+		font-size: 70%;
+		padding: 0px;
+		border: none;
+	}
+
+	.fullname {
+		color: #666;
+		font-weight: bold;
+	}
+
+	.user_icon {
+		float:left;
+		width: 24px;
+		height: 24px;
+		margin-right: 5px;
+	}
+
+	.twitter {
+		color: #888;
+	}
+
+	.timer {
+		color: #888;
+		font-size: 50%;
+	}
+
+</style>
+
+<h1>Show blabs containing any of these keywords:</h1>
+<input type=text id=keywords value="" placeholder="Keyword(s) separated by commas">
+<div class="note timer"> Updating in <span id=secs>60</span> seconds.  </div>
+
+<hr>
+	Matched <span id=matched_blabs></span> of <span id=total_blabs></span> blabs and <span id=matched_users></span> users.
+<hr>
+
+<div id=tpl_blab class="blab show___show__">
+	<div class=theme>
+		<a href="http://blab.im/__friendly_url__" target="__friendly_url__">__theme__</a>
+	</div>
+	<div class=note>
+	<div id=tpl_user___stream_id__ class="user hilite___hilite__" title="__title__ (__followers__ followers)">
+		<table cellspacing=0 cellpadding=0>
+			<tr>
+				<td><img src="" class=user_icon></td>
+				<td>
+					<div class=fullname></div>
+					<div class=twitter>@__twitter_username__</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="replicate.js"></script>
+<script src="sleepless.js"></script>
+<script src="meet.js"></script>
+<script src="notification.js"></script>
+<script src=local.js></script>
+

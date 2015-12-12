@@ -1,7 +1,32 @@
 
 
-var cur_blabs = {};
-var cur_twits = {};
+log = function(s) { console.log(s); }
+
+function getQueryData(key) {
+	var o = {}
+	var s = document.location.search
+	if(s) {
+		var kv = s.substr(1).split("&")
+		for(var i = 0; i < kv.length; i++) {
+			var aa = kv[i].split("=")
+			o[aa[0]] = decodeURIComponent(aa[1])
+		}
+	}
+	if(key !== undefined) {
+		return o[key];
+	}
+	return o;
+}
+
+
+replicate("tpl_who", []);
+
+cur_ver = null;
+
+cur_blabs = {};
+total_blabs = 0;
+matched_blabs = 0;
+matched_users = 0;
 
 cached_users = {};
 
@@ -14,6 +39,10 @@ analyze = function(blabs) {
 
 	var new_blabs = {};
 
+	total_blabs = blabs.length;
+	matched_blabs = 0;
+	matched_users = 0;
+
 	blabs.forEach(function(blab) {
 		var stream_id = blab.stream_id;
 
@@ -22,13 +51,33 @@ analyze = function(blabs) {
 		// show those blabs where title matches 1 or more keywords
 		var theme = blab.theme.toLowerCase();
 		keywords.forEach(function(s) {
-			if( ! s.startsWith("@") ) {
-				if(theme.indexOf(s) >= 0) {
-					blab.show = 1;
-					new_blabs[stream_id] = blab;
+			if(s) {
+				if( ! s.startsWith("@") ) {
+					if(theme.indexOf(s) >= 0) {
+						blab.show = 1;
+						matched_blabs += 1;
+						new_blabs[stream_id] = blab;
+					}
 				}
 			}
 		});
+
+		for(var c = 0; c < blab.callers.length; c++) {
+			var caller = blab.callers[c];
+			for(var u = 0; u < blab.users.length; u++) {
+				var user = blab.users[u];
+				if(caller.user_id == user.user_id) {
+					user.caller = 1;
+					break;
+				}
+			}
+			if(u == blab.users.length) {
+				// caller wasn't found in users array
+				caller.caller = 1;
+				blab.users.push(caller);
+			}
+		}
+		
 
 		var users = blab.users;
 		users.forEach(function(user) {
@@ -36,15 +85,18 @@ analyze = function(blabs) {
 			user.hilite = 0;
 			var twitter_username = user.twitter_username.toLowerCase();
 			keywords.forEach(function(s) {
-				if(s.startsWith("@")) {
-					if(twitter_username.indexOf(s.substr(1)) >= 0) {
-						user.hilite = 1;
-						blab.show = 1;
-						new_blabs[stream_id] = blab;
+				if(s) {
+					if(s.startsWith("@")) {
+						if(twitter_username.indexOf(s.substr(1)) >= 0) {
+							user.hilite = 1;
+							blab.show = 1;
+							matched_users += 1;
+							new_blabs[stream_id] = blab;
+						}
 					}
-				}
-				else {
-					// check full name
+					else {
+						// check full name
+					}
 				}
 			});
 		});
@@ -68,6 +120,9 @@ analyze = function(blabs) {
 
 
 display = function(blabs) {
+	$("#total_blabs").html(total_blabs);
+	$("#matched_blabs").html(matched_blabs);
+	$("#matched_users").html(matched_users);
 	replicate("tpl_blab", blabs, function(e_blab, blab, i) {
 		e_blab.id = "blab_"+blab.stream_id;
 		replicate("tpl_user_"+blab.stream_id, blab.users, function(e_user, user) {
@@ -89,6 +144,14 @@ display = function(blabs) {
 			}
 
 		});
+		/*
+		replicate("tpl_xc_"+blab.stream_id, blab.users, function(e, user) {
+			$(e).html(user.user_id.abbr(8));
+		});
+		replicate("tpl_xu_"+blab.stream_id, blab.callers, function(e, user) {
+			$(e).html(user.user_id.abbr(8));
+		});
+		*/
 	});
 }
 
@@ -121,7 +184,7 @@ refresh = function() {
 		blabs.forEach(function(blab) {
 			m.start(function(cb) {
 				blab.users = [];
-				$.get("https://api.blab.im/stream/viewers?stream_id="+blab.stream_id, function(r) {
+				$.get("https://api.blab.im/stream/viewers?count=100&stream_id="+blab.stream_id, function(r) {
 					var users = r.result;
 					var m2 = new Meet();
 					users.forEach(function(user) {
@@ -172,4 +235,93 @@ $("#keywords").val(v).change(function() {
 	refresh();
 }).change();
 
+
+
+nick = "";
+pic = "";
+
+fb_ready = function(data) {
+	//log("fb_ready: "+o2j(data));
+	if(data) {
+		log("facebook session in effect")
+		nick = data.first_name+" "+data.last_name;
+		pic = data.pic;
+		//log("pic="+pic);
+		//use_nick(data.first_name);
+		//ws_connect()
+	}
+	else {
+		nick = "Guest-"+(toInt(Math.random() * 100000));
+		pic = "";
+		//glass(1)
+		//var nick = LS.get("nick") || "";
+		//$("#nick").val(nick);
+		//$("#nick_entry").show()
+		//$("#nick").focus()
+	}
+	log("nick="+nick);
+	ping();
+}
+
+
+var who = {};
+replicate("tpl_who", []);
+
+beforeUnload = function() {
+	return null;
+}
+
+
+
+ping = function() {
+
+	db.sql("delete from users where name='Guest' or ping < date_sub(now(), interval 30 second)", [], function(r) {
+		//log("culled "+o2j(r.affected_rows));
+		db.sql("select * from users where ping >= date_sub(now(), interval 15 second) order by name", [], function(r) {
+			//log("r="+o2j(r));
+			replicate("tpl_who", r.records, function(e, d) {
+				$(e).find("img").attr("src", d.pic);
+			});
+		});
+	});
+
+	if(nick) {
+		db.sql("update users set ping=now(), pic=? where name=?", [pic, nick], function(r) {
+			if(r.affected_rows < 1) {
+				db.sql("insert into users (pic, name, ping) values(?, ?, now())", [pic, nick], function(r) {
+					log("inserted "+nick);
+				});
+			}
+			else {
+				//log("updated "+nick);
+			}
+		});
+	}
+
+	$.get("./version.txt", function(s) {
+		cur_ver = localStorage.getItem("current_version");
+		if(!cur_ver) {
+			log("noting cur_ver "+s);
+			localStorage.setItem("current_version", s);
+		}
+		else {
+			if(cur_ver != s) {
+				localStorage.setItem("current_version", s);
+				// log("version update!");
+				document.location.reload();
+			}
+		}
+	});
+}
+
+
+db = null;
+
+$(document).ready(function() {
+	db = new DB("blabmonitor", "9D9tMZKLrEWVPB6M");
+
+	setInterval(ping, 15 * 1000);
+	ping();
+
+});
 
