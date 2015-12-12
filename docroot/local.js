@@ -385,6 +385,10 @@ $(document).ready(function() {
 		$("#monitor").click();
 	});
 
+	$("#clear_blab").click(function() {
+		$("#blab_frame").attr("src", "");
+	});
+
 	setTimeout(function() {
 		$("#monitor").click();
 	}, 2000);

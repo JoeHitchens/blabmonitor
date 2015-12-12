@@ -8,6 +8,8 @@
 		margin: 0px;
 		font-size: 20px;
 		font-family: helvetica;
+	}
+	body {
 		background-color: #000;
 	}
 	table, td {
@@ -46,6 +48,11 @@
 	}
 	.blab {
 		margin: 10px 0px;
+		background-color: #def;
+		padding: 10px;
+		font-size: 90%;
+		position: relative;
+		top: -20px;
 	}
 	.hilite {
 		background-color: #ff0;
@@ -66,7 +73,7 @@
 	.hilite_0 { background-color: inherit; }
 	.hilite_1 { background-color: #ff0; }
 
-	.caller_1 { border: solid 1px #f00; }
+	.caller_1 { border: solid 2px #f00; }
 
 	.show_0 { display: none; }
 	.show_1 { display: inherit; }
@@ -177,6 +184,10 @@
 		zcolor: #def;
 	}
 
+	#clear_blab {
+		color: #f80;
+	}
+
 </style>
 
 <iframe id=blab_frame src="" ></iframe>
@@ -203,6 +214,8 @@
 
 
 <div class=note >
+	<span id=clear_blab>[ Clear Blab ] </span>
+
 	Matched <span id=matched_blabs></span> (of <span id=total_blabs></span>) blab(s) and <span id=matched_users></span> users.
 	&mdash;
 	Updating in <span id=secs>60</span> seconds.
@@ -215,7 +228,9 @@
 
 	<div id=tpl_blab class="blab show___show__">
 		<div class=theme>
-			<a class=preview zhref="http://blab.im/__friendly_url__" target="__friendly_url__">&#x25c0; __theme__</a>
+			<a class=preview zhref="http://blab.im/__friendly_url__" target="__friendly_url__" title="Monitor this blab">&#x25c0;</a>
+			<a class=popout href="http://blab.im/__friendly_url__" target="__friendly_url__" title="Open this blab in a separate window">⇧</a>
+			__theme__
 		</div>
 		<div class=note>
 			<div id=tpl_user___stream_id__ class="user caller___caller__ hilite___hilite__" title="__title__ (__followers__ followers)">
