@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "maws": "^1.8.0",
     "meet": "^2.0.0",
     "sleepless": "^2.2.1",
     "sleepless-replicate": "^2.1.0"
