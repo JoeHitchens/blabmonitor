@@ -149,7 +149,8 @@ display = function(blabs) {
 				});
 			}
 
-			$(e_user).click(function() {
+			$(e_user).click(function(evt) {
+				evt.stopPropagation();	
 				socket.send({msg:"user_info", user:user});
 			});
 
@@ -269,10 +270,15 @@ fb_ready = function(data) {
 		//$("#nick_entry").show()
 		//$("#nick").focus()
 	}
-	log("nick="+nick);
+	log("fb nick="+nick);
+	setNickname(nick);
 	ping();
 }
 
+
+setNickname = function(n) {
+	$("#nickname").html(n);
+}
 
 var who = {};
 replicate("tpl_who", []);
@@ -356,6 +362,8 @@ maws_init = function() {
 		if(m === "connected") {
 			socket.send({msg:"hello"}, function(r) {
 				log("I've been welcomed as "+r.name)
+				nick = r.name;
+				setNickname(nick);
 			});
 			return
 		}
@@ -381,9 +389,11 @@ $(document).ready(function() {
 		});
 	});
 
-	$("#toggler").click(function() {
+	$("#toggler").click(function(evt) {
+		evt.stopPropagation();	
 		$("#monitor").click();
 	});
+
 
 	$("#clear_blab").click(function() {
 		$("#blab_frame").attr("src", "");
