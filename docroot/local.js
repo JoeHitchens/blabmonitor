@@ -264,19 +264,14 @@ fb_ready = function(data) {
 	else {
 		nick = "Guest-"+(toInt(Math.random() * 100000));
 		pic = "";
-		//glass(1)
-		//var nick = LS.get("nick") || "";
-		//$("#nick").val(nick);
-		//$("#nick_entry").show()
-		//$("#nick").focus()
 	}
 	log("fb nick="+nick);
-	setNickname(nick);
+	showNickname(nick);
 	ping();
 }
 
 
-setNickname = function(n) {
+showNickname = function(n) {
 	$("#nickname").html(n);
 }
 
@@ -363,7 +358,7 @@ maws_init = function() {
 			socket.send({msg:"hello"}, function(r) {
 				log("I've been welcomed as "+r.name)
 				nick = r.name;
-				setNickname(nick);
+				showNickname(nick);
 			});
 			return
 		}
@@ -371,6 +366,32 @@ maws_init = function() {
 
 	socket = MAWS.connect(cb_msg, cb_ctrl)
 }
+
+collectNickname = function(evt) {
+	evt.stopPropagation();	
+
+	$(".dlg").hide();		// hide all dialogs
+
+	/*
+	$("#okay").onclick = function() {
+		nick = $("#new_nick");
+		log("new nick is "+nick);
+		showNickname(nick);
+		$("#glass").hide();
+	};
+	*/
+
+	$("#glass").show();
+	$("#get_nick_dlg").show();	// show the one I want
+
+
+	//var nick = LS.get("nick") || "";
+	//$("#nick").val(nick);
+	//$("#nick_entry").show()
+	//$("#nick").focus()
+}
+
+
 
 
 $(document).ready(function() {
@@ -394,9 +415,23 @@ $(document).ready(function() {
 		$("#monitor").click();
 	});
 
+	$("#nickname").click(collectNickname);
 
 	$("#clear_blab").click(function() {
 		$("#blab_frame").attr("src", "");
+	});
+
+	$("#glass").click(function() {
+		$(this).hide();
+	});
+
+	$("#cancel").click(function() {
+		log("CANCEL");
+		$("#glass").hide();
+	});
+
+	$(".dlg, .dlg_wrapper").click(function(evt) {
+		evt.stopPropagation();	
 	});
 
 	setTimeout(function() {
