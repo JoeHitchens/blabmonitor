@@ -8,11 +8,12 @@ while true ; do
 	echo "---------- start " `date` >> log.txt
 
 	if node bm.js &> $l ; then
+		echo "---------- Normal exit " `date` >> log.txt
 		break
 	fi
 	cat $l >> log.txt
 
-	echo "---------- end " `date` >> log.txt
+	echo "---------- ABNORMAL EXIT " `date` >> log.txt
 
 	sleep 4
 

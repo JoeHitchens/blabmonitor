@@ -372,23 +372,16 @@ collectNickname = function(evt) {
 
 	$(".dlg").hide();		// hide all dialogs
 
-	/*
-	$("#okay").onclick = function() {
-		nick = $("#new_nick");
+	$("#okay").get(0).onclick = function() {
+		nick = $("#new_nick").val();
 		log("new nick is "+nick);
 		showNickname(nick);
+		$(".dlg").hide();		// hide all dialogs
 		$("#glass").hide();
 	};
-	*/
 
 	$("#glass").show();
 	$("#get_nick_dlg").show();	// show the one I want
-
-
-	//var nick = LS.get("nick") || "";
-	//$("#nick").val(nick);
-	//$("#nick_entry").show()
-	//$("#nick").focus()
 }
 
 

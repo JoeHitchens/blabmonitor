@@ -1,4 +1,11 @@
 
+
+process.on("SIGHUP", function() {
+	console.log("SIGHUP");
+	process.exit(0);
+});
+
+
 maws = require("maws"); maws.dbg = function(s) { console.log("MAWS: "+s) }
 
 seq = 0
