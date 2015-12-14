@@ -251,29 +251,27 @@ $("#keywords").val(v).change(function() {
 nick = "";
 pic = "";
 
+setNick = function(n) {
+	nick = n;
+	$("#nickname").html(n);
+	log("set nick to "+nick);
+}
+
+
 fb_ready = function(data) {
 	//log("fb_ready: "+o2j(data));
 	if(data) {
 		log("facebook session in effect")
-		nick = data.first_name+" "+data.last_name;
+//		setNick(data.first_name+" "+data.last_name);
 		pic = data.pic;
-		//log("pic="+pic);
-		//use_nick(data.first_name);
-		//ws_connect()
 	}
 	else {
-		nick = "Guest-"+(toInt(Math.random() * 100000));
+//		setNick("Guest-"+(toInt(Math.random() * 100000)));
 		pic = "";
 	}
-	log("fb nick="+nick);
-	showNickname(nick);
 	ping();
 }
 
-
-showNickname = function(n) {
-	$("#nickname").html(n);
-}
 
 var who = {};
 replicate("tpl_who", []);
@@ -285,31 +283,6 @@ beforeUnload = function() {
 
 
 ping = function() {
-
-/*
-	db.sql("delete from users where name='Guest' or ping < date_sub(now(), interval 30 second)", [], function(r) {
-		//log("culled "+o2j(r.affected_rows));
-		db.sql("select * from users where ping >= date_sub(now(), interval 15 second) order by name", [], function(r) {
-			//log("r="+o2j(r));
-			replicate("tpl_who", r.records, function(e, d) {
-				$(e).find("img").attr("src", d.pic);
-			});
-		});
-	});
-
-	if(nick) {
-		db.sql("update users set ping=now(), pic=? where name=?", [pic, nick], function(r) {
-			if(r.affected_rows < 1) {
-				db.sql("insert into users (pic, name, ping) values(?, ?, now())", [pic, nick], function(r) {
-					log("inserted "+nick);
-				});
-			}
-			else {
-				//log("updated "+nick);
-			}
-		});
-	}
-*/
 
 	$.get("./version.txt", function(s) {
 		cur_ver = localStorage.getItem("current_version");
@@ -356,9 +329,12 @@ maws_init = function() {
 
 		if(m === "connected") {
 			socket.send({msg:"hello"}, function(r) {
-				log("I've been welcomed as "+r.name)
-				nick = r.name;
-				showNickname(nick);
+				log("connected and welcomed as "+r.name)
+				setNick(r.name);
+
+				//if(!localStorage.getItem("nick")) {
+				//	collectNick();
+				//}
 			});
 			return
 		}
@@ -367,18 +343,34 @@ maws_init = function() {
 	socket = MAWS.connect(cb_msg, cb_ctrl)
 }
 
-collectNickname = function(evt) {
-	evt.stopPropagation();	
+collectNick = function(evt) {
+	if(evt) {
+		evt.stopPropagation();	
+	}
 
 	$(".dlg").hide();		// hide all dialogs
 
 	$("#okay").get(0).onclick = function() {
-		nick = $("#new_nick").val();
-		log("new nick is "+nick);
-		showNickname(nick);
+		var u = $("#username").val()
+		var p = $("#password").val()
+		setNick(u);
 		$(".dlg").hide();		// hide all dialogs
 		$("#glass").hide();
+
+		socket.send({msg:"authenticate", username:u, password:p}, function(r) {
+			if(!r.error) {
+				setNick(u);
+				localStorage.setItem("username", u);
+				localStorage.setItem("password", p);
+			}
+			else {
+				alert(r.error);
+			}
+		});
 	};
+
+	$("#username").val(localStorage.getItem("username"));
+	$("#password").val("");
 
 	$("#glass").show();
 	$("#get_nick_dlg").show();	// show the one I want
@@ -408,7 +400,7 @@ $(document).ready(function() {
 		$("#monitor").click();
 	});
 
-	$("#nickname").click(collectNickname);
+	$("#nickname").click(collectNick);
 
 	$("#clear_blab").click(function() {
 		$("#blab_frame").attr("src", "");
@@ -426,6 +418,8 @@ $(document).ready(function() {
 	$(".dlg, .dlg_wrapper").click(function(evt) {
 		evt.stopPropagation();	
 	});
+
+
 
 	setTimeout(function() {
 		$("#monitor").click();

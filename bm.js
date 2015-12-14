@@ -1,4 +1,5 @@
 
+require("sleepless");
 
 process.on("SIGHUP", function() {
 	console.log("SIGHUP");
@@ -39,15 +40,38 @@ maws.listen(9900, connect, "docroot")
 
 var DS = require("ds").DS
 ds = new DS()
-ds.data = {};
-//ds.save()
+if(ds.data === undefined) {
+	ds.data = {};
+}
 
 
 msg_hello = function(client, m) {
 	m.reply({msg:"welcome", name:client.name})
-	client.socket.send({msg:"ping"}, function(r) {
-		console.log(JSON.stringify(r));
-	})
+}
+
+msg_authenticate = function(client, m) {
+
+	var username = ""+m.username;
+	var password = ""+m.password;
+
+	var user = ds.data[username];
+	if(!user) {
+		// first time seeing this username.  Store it with provided password
+		user = {
+			username: username,
+			password: password,
+			created: time(),
+		};
+		ds.data[username] = user;
+		ds.save();
+		console.log("Created new user: "+username);
+	}
+
+	m.reply({})
+
+	//client.socket.send({msg:"ping"}, function(r) {
+	//	console.log(JSON.stringify(r));
+	//})
 }
 
 
